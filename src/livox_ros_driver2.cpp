@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
 
   /** Init default system parameter */
   int xfer_format = kPointCloud2Msg;
-  std::string topic_name = "/livox/lidar";
   int multi_topic = 0;
   int data_src = kSourceRawLidar;
   double publish_freq  = 10.0; /* Hz */
@@ -62,7 +61,6 @@ int main(int argc, char **argv) {
   bool imu_bag   = false;
 
   livox_node.GetNode().getParam("xfer_format", xfer_format);
-  livox_node.GetNode().getParam("topic_name", topic_name);
   livox_node.GetNode().getParam("multi_topic", multi_topic);
   livox_node.GetNode().getParam("data_src", data_src);
   livox_node.GetNode().getParam("publish_freq", publish_freq);
@@ -84,7 +82,7 @@ int main(int argc, char **argv) {
   livox_node.future_ = livox_node.exit_signal_.get_future();
 
   /** Lidar data distribute control and lidar data source set */
-  livox_node.lddc_ptr_ = std::make_unique<Lddc>(xfer_format, topic_name, multi_topic, data_src, output_type,
+  livox_node.lddc_ptr_ = std::make_unique<Lddc>(xfer_format, multi_topic, data_src, output_type,
                         publish_freq, frame_id, lidar_bag, imu_bag);
   livox_node.lddc_ptr_->SetRosNode(&livox_node);
 
@@ -124,7 +122,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
 
   /** Init default system parameter */
   int xfer_format = kPointCloud2Msg;
-  std::string topic_name = "/livox/lidar";
   int multi_topic = 0;
   int data_src = kSourceRawLidar;
   double publish_freq = 10.0; /* Hz */
@@ -132,7 +129,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   std::string frame_id;
 
   this->declare_parameter("xfer_format", xfer_format);
-  this->declare_parameter("topic_name", topic_name);
   this->declare_parameter("multi_topic", 0);
   this->declare_parameter("data_src", data_src);
   this->declare_parameter("publish_freq", 10.0);
@@ -143,7 +139,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   this->declare_parameter("lvx_file_path", "/home/livox/livox_test.lvx");
 
   this->get_parameter("xfer_format", xfer_format);
-  this->get_parameter("topic_name", topic_name);
   this->get_parameter("multi_topic", multi_topic);
   this->get_parameter("data_src", data_src);
   this->get_parameter("publish_freq", publish_freq);
@@ -161,7 +156,7 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   future_ = exit_signal_.get_future();
 
   /** Lidar data distribute control and lidar data source set */
-  lddc_ptr_ = std::make_unique<Lddc>(xfer_format, topic_name, multi_topic, data_src, output_type, publish_freq, frame_id);
+  lddc_ptr_ = std::make_unique<Lddc>(xfer_format, multi_topic, data_src, output_type, publish_freq, frame_id);
   lddc_ptr_->SetRosNode(this);
 
   if (data_src == kSourceRawLidar) {

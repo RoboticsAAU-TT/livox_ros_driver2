@@ -41,10 +41,9 @@ namespace livox_ros {
 
 /** Lidar Data Distribute Control--------------------------------------------*/
 #ifdef BUILDING_ROS1
-Lddc::Lddc(int format, std::string topic_name, int multi_topic, int data_src, int output_type,
+Lddc::Lddc(int format, int multi_topic, int data_src, int output_type,
     double frq, std::string &frame_id, bool lidar_bag, bool imu_bag)
     : transfer_format_(format),
-      topic_name_(topic_name),
       use_multi_topic_(multi_topic),
       data_src_(data_src),
       output_type_(output_type),
@@ -62,10 +61,9 @@ Lddc::Lddc(int format, std::string topic_name, int multi_topic, int data_src, in
   bag_ = nullptr;
 }
 #elif defined BUILDING_ROS2
-Lddc::Lddc(int format, std::string topic_name, int multi_topic, int data_src, int output_type,
+Lddc::Lddc(int format, int multi_topic, int data_src, int output_type,
            double frq, std::string &frame_id)
     : transfer_format_(format),
-      topic_name_(topic_name),
       use_multi_topic_(multi_topic),
       data_src_(data_src),
       output_type_(output_type),
@@ -579,7 +577,7 @@ PublisherPtr Lddc::GetCurrentPublisher(uint8_t index) {
       DRIVER_INFO(*cur_node_, "Support multi topics.");
     } else {
       DRIVER_INFO(*cur_node_, "Support only one topic.");
-      const char* name_str = GetTopicName().c_str();
+      const char* name_str = "livox/lidar";
       snprintf(name_str, sizeof(name_str), name_str);
     }
 
@@ -659,7 +657,7 @@ std::shared_ptr<rclcpp::PublisherBase> Lddc::GetCurrentPublisher(uint8_t handle)
     return private_pub_[handle];
   } else {
     if (!global_pub_) {
-      std::string topic_name(topic_name_);
+      std::string topic_name("livox/lidar");
       queue_size = queue_size * 8; // shared queue size is 256, for all lidars
       global_pub_ = CreatePublisher(transfer_format_, topic_name, queue_size);
     }

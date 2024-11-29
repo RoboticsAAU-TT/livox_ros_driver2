@@ -6,7 +6,6 @@ import launch
 
 ################### user configure parameters for ros2 start ###################
 xfer_format   = 0    # 0-Pointcloud2(PointXYZRTL), 1-customized pointcloud format
-topic_name    = '/livox/lidar/pointcloud2'
 multi_topic   = 0    # 0-All LiDARs share the same topic, 1-One LiDAR one topic
 data_src      = 0    # 0-lidar, others-Invalid data src
 publish_freq  = 10.0 # freqency of publish, 5.0, 10.0, 20.0, 50.0, etc.
@@ -23,7 +22,6 @@ user_config_path = os.path.join(cur_config_path, 'MID360_config.json')
 
 livox_ros2_params = [
     {"xfer_format": xfer_format},
-    {"topic_name": topic_name},
     {"multi_topic": multi_topic},
     {"data_src": data_src},
     {"publish_freq": publish_freq},

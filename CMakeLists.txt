@@ -317,6 +317,23 @@ else(ROS_EDITION STREQUAL "ROS2")
     EXECUTABLE ${PROJECT_NAME}_node
   )
 
+  # Component
+  ament_auto_add_library(livox_to_pointcloud2 SHARED
+    src/livox_to_pointcloud2/livox_to_pointcloud2_ros2.cpp
+  )
+  rclcpp_components_register_nodes(livox_to_pointcloud2 "livox_to_pointcloud2::LivoxToPointCloud2")
+
+  # Node
+  ament_auto_add_executable(livox_to_pointcloud2_node
+    src/livox_to_pointcloud2/livox_to_pointcloud2_ros2_node.cpp
+  )
+  target_include_directories(livox_to_pointcloud2_node PUBLIC
+    include
+  )
+  target_link_libraries(livox_to_pointcloud2_node
+    livox_to_pointcloud2
+  )
+
   if(BUILD_TESTING)
     find_package(ament_lint_auto REQUIRED)
     # the following line skips the linter which checks for copyrights
