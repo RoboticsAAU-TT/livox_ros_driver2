@@ -72,10 +72,10 @@ class DriverNode;
 class Lddc final {
  public:
 #ifdef BUILDING_ROS1
-  Lddc(int format, int multi_topic, int data_src, int output_type, double frq,
+  Lddc(int format, std::string topic_name, int multi_topic, int data_src, int output_type, double frq,
       std::string &frame_id, bool lidar_bag, bool imu_bag);
 #elif defined BUILDING_ROS2
-  Lddc(int format, int multi_topic, int data_src, int output_type, double frq,
+  Lddc(int format, std::string topic_name, int multi_topic, int data_src, int output_type, double frq,
       std::string &frame_id);
 #endif
   ~Lddc();
@@ -87,6 +87,7 @@ class Lddc final {
   void PrepareExit(void);
 
   uint8_t GetTransferFormat(void) { return transfer_format_; }
+  std::string GetTopicName(void) { return topic_name_; }
   uint8_t IsMultiTopic(void) { return use_multi_topic_; }
   void SetRosNode(livox_ros::DriverNode *node) { cur_node_ = node; }
 
@@ -133,6 +134,7 @@ class Lddc final {
 
  private:
   uint8_t transfer_format_;
+  std::string topic_name_;
   uint8_t use_multi_topic_;
   uint8_t data_src_;
   uint8_t output_type_;
